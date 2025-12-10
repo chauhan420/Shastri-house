@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Riddle & Tongue Twister Generator (Working Version)</title>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+
+    /* Smooth yellow–gold background */
+    background: linear-gradient(135deg, #fff7c2 0%, #ffed99 40%, #ffdb58 100%);
+
+    /* Add a subtle glow pattern */
+    background-attachment: fixed;
+}
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    }
+    .container h1{text-align: center;}
+    button {
+    padding: 10px 20px;
+    margin: 8px 5px;
+    font-size: 16px;
+    cursor: pointer;
+
+    /* Golden gradient background */
+    background: linear-gradient(135deg, #ffdd44 0%, #ffcc00 40%, #e6b800 100%);
+
+    color: #4a3500;
+    border: none;
+    border-radius: 8px;
+
+    /* Shine + depth */
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.25),
+        inset 0 0 8px rgba(255,255,255,0.5);
+
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    transition: 0.2s ease-in-out;
+}
+
+/* Hover effect */
+button:hover {
+    background: linear-gradient(135deg, #ffe066 0%, #ffd11a 40%, #e6b800 100%);
+    box-shadow:
+        0 4px 10px rgba(0,0,0,0.35),
+        inset 0 0 10px rgba(255,255,255,0.6);
+    transform: translateY(-2px);
+}
+
+/* When clicked */
+button:active {
+    transform: scale(0.97);
+}
+
+    button:hover { background: #005ea6; }
+    h2 { margin-top: 30px; }
+    
+    
+    .output, .answer {
+    background: linear-gradient(135deg, #fff7c2 0%, #ffe88a 40%, #ffd642 100%);
+    padding: 18px;
+    margin-top: 10px;
+    border-radius: 10px;
+    min-height: 40px;
+    border-left: 6px solid #ffb300;
+    border-right: 6px solid #ffca28;
+
+    /* Stylish effects */
+    box-shadow: 
+        0 4px 10px rgba(0,0,0,0.15),
+        inset 0 0 12px rgba(255, 255, 0, 0.2);
+
+    color: #3b2f00;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Riddle & Tongue Twister Generator</h1>
+
+    <h2>Choose Language</h2>
+    <select id="langSelect" onchange="updateList()">
+        <option value="english">English</option>
+        <option value="hindi">Hindi</option>
+    </select>
+
+    <h2>Choose Type</h2>
+    <select id="typeSelect" onchange="updateList()">
+        <option value="riddle">Riddle</option>
+        <option value="twister">Tongue Twister</option>
+    </select>
+
+    <div>
+        <button onclick="previousItem()">Previous</button>
+        <button onclick="nextItem()">Next</button>
+        <button onclick="showAnswer()">Show Answer</button>
+    </div>
+
+    <h2>Question</h2>
+    <div class="output" id="output"></div>
+
+    <h2>Answer</h2>
+    <div class="answer" id="answer"></div>
+</div>
+
+<script>
+// -------------------------
+// ENGLISH RIDDLES
+// -------------------------
+const englishRiddles = [
+    {q:"What has keys but can't open locks?", a:"A Piano"},
+    {q:"What has a heart that doesn’t beat?", a:"An Artichoke"},
+    {q:"What has a neck but no head?", a:"A Bottle"},
+    {q:"What gets wetter the more it dries?", a:"A Towel"},
+    {q:"What has a face and two hands but no arms or legs?", a:"A Clock"},
+    {q:"What comes down but never goes up?", a:"Rain"},
+    {q:"I have branches but no fruit. What am I?", a:"A Bank"},
+    {q:"What has words but never speaks?", a:"A Book"},
+    {q:"What has one eye but can’t see?", a:"A Needle"},
+    {q:"What can you catch but not throw?", a:"A Cold"},
+    {q:"What is full of holes but still holds water?", a:"A Sponge"},
+    {q:"What runs but never walks?", a:"A River"},
+    {q:"What has ears but can’t hear?", a:"Cornfield"},
+    {q:"What has a bed but never sleeps?", a:"A River"},
+    {q:"What has legs but doesn’t walk?", a:"A Table"},
+    {q:"What gets broken without being touched?", a:"A Promise"},
+    {q:"What has many teeth but cannot bite?", a:"A Comb"},
+    {q:"The more you take, the more you leave behind.", a:"Footsteps"},
+    {q:"What belongs to you but others use it more?", a:"Your Name"},
+    {q:"What travels around the world while staying in one corner?", a:"A Stamp"},
+    {q:"What has a ring but no finger?", a:"A Telephone"},
+    {q:"What is always in front of you but can’t be seen?", a:"The Future"},
+    {q:"What has a thumb and four fingers but is not a hand?", a:"A Glove"},
+    {q:"What begins with T, ends with T, and has T in it?", a:"Teapot"},
+    {q:"What goes up but never comes down?", a:"Your Age"}
+];
+
+// -------------------------
+// ENGLISH TONGUE TWISTERS
+// -------------------------
+const englishTwisters = [
+"She sells seashells by the seashore.",
+"Peter Piper picked a peck of pickled peppers.",
+"How much wood would a woodchuck chuck?",
+"Red lorry, yellow lorry.",
+"Unique New York.",
+"Irish wristwatch, Swiss wristwatch.",
+"I scream, you scream, we all scream for ice cream.",
+"Betty Botter bought some butter.",
+"Fuzzy Wuzzy was a bear.",
+"A proper copper coffee pot.",
+"Greek grapes, Swiss sweets.",
+"Toy boat, toy boat, toy boat.",
+"Fresh fried fish.",
+"Blue blurry berries.",
+"Fred fed Ted bread, Ted fed Fred bread.",
+"Six slippery snails slid slowly seaward.",
+"A big black bear sat on a big black rug.",
+"Thin sticks, thick bricks.",
+"Many an anemone sees an enemy anemone.",
+"Green glass globes glow greenly.",
+"Four furious friends fought for the phone.",
+"Truly rural.",
+"A snake sneaks to seek a snack.",
+"Black back bat.",
+"Can you can a can as a canner can can a can?"
+];
+
+// -------------------------
+// HINDI RIDDLES
+// -------------------------
+const hindiRiddles = [
+    {q:"ऐसी कौन-सी चीज़ है जो टूटने पर आवाज़ नहीं करती?", a:"विश्वास"},
+    {q:"किसके पंख हैं, पर उड़ नहीं सकता?", a:"पंखा"},
+    {q:"कौन-सी चीज़ बिना पैरों के चलती है?", a:"घड़ी"},
+    {q:"कौन-सी चीज़ खाना खाते-खाते घटती जाती है?", a:"मोमबत्ती"},
+    {q:"क्या है जो पानी में गिरते ही भीगता नहीं?", a:"परछाई"},
+    {q:"किसके दांत होते हैं पर काट नहीं सकता?", a:"कंघी"},
+    {q:"कौन-सी चीज़ चलती भी है और रुकती भी है?", a:"साँस"},
+    {q:"कौन-सी चीज़ जितना ज्यादा भरोगे उतना हल्का होगा?", a:"गुब्बारा"},
+    {q:"कौन-सी चीज़ जितना बढ़ती है उतना पीछे छोड़ती है?", a:"उम्र"},
+    {q:"किसका सिर है पर दिमाग नहीं?", a:"लहसुन"},
+    {q:"कौन आता भी है और जाता भी है पर दिखाई नहीं देता?", a:"हवा"},
+    {q:"कौन-सी चीज़ फैलती है पर जगह नहीं घेरती?", a:"खुशबू"},
+    {q:"किसका वजन नहीं होता?", a:"धुआँ"},
+    {q:"कौन-सी चीज़ टूटकर भी चलती है?", a:"लहरें"},
+    {q:"किसके पास आँखें हैं पर देख नहीं सकता?", a:"आलू"},
+    {q:"कौन-सी चीज़ चढ़ती भी है और उतरती भी है पर हिलती नहीं?", a:"सीढ़ियाँ"},
+    {q:"कौन-सी चीज़ सिर पर भी होती है और पाँव में भी?", a:"टोपी और जूता"},
+    {q:"कौन-सी चीज़ सुबह छोटी और शाम को लंबी होती है?", a:"छाया"},
+    {q:"कौन-सी चीज़ बिना बोले बहुत कुछ कह देती है?", a:"आँखें"},
+    {q:"किसके पास छेद ही छेद हैं पर पकड़ नहीं सकते?", a:"जाली"},
+    {q:"कौन-सी चीज़ सब देखते हैं पर पकड़ नहीं सकते?", a:"समय"},
+    {q:"क्या है जो न छू सकते, न पकड़ सकते, पर महसूस कर सकते हैं?", a:"हवा"},
+    {q:"किसके पैर नहीं पर चलता है?", a:"पानी"},
+    {q:"कौन-सी चीज़ पानी में भी जलती है?", a:"सूरज की किरण"},
+    {q:"किसके घर में दरवाज़े नहीं?", a:"चींटी"}
+];
+
+// -------------------------
+// HINDI TONGUE TWISTERS
+// -------------------------
+const hindiTwisters = [
+"कच्चा पापड़, पक्का पापड़।",
+"चंदू के चाचा ने चंदू की चाची को चांदनी चौक में चांदी की चम्मच से चटनी चटाई।",
+"ऊँट ऊँची पहाड़ी पर ऊँघता है।",
+"राम लाल लाल रमाल लाया।",
+"खड़क सिंह के खड़कने से खड़कती हैं खिड़कियाँ।",
+"टप्पू तत्ता तत्तू तित्ता।",
+"चमकती चाँदनी में चींटी चली चुपचाप।",
+"ठग ठगे ठग ने ठगों को ठगा।",
+"घोड़ा घास खाता है, घास घोड़ा खाता है।",
+"राजा रानी रात में रोज़ रसगुल्ले खाते हैं।",
+"झमाझम झरने झरते झरमर।",
+"चटोरी चुन्नी चटपटी चटनी चाट गई।",
+"फ़िसलन वाली फ़र्श पर फ़र्शी फ़िसली।",
+"कपड़ा कटो, कटो कपड़ा।",
+"पीतल के पत्तर पर पप्पू ने पालक पीटा।",
+"नन्हा नटुआ नटकर नाचा।",
+"सात सरसों वाले सरसों से सरसों तेल निकाला।",
+"गुलगुले गुलगुले गलगले।",
+"तड़क भड़क तारा टिमटिम।",
+"पगड़ी पहन पगडंडी पर पग पग धर।",
+"चाँद चमका चटकीले चीनी जैसे।",
+"छोटी चुड़ैल चटपटी चटनी चख गई।",
+"घर घर घरघर घरघराए।",
+"नदी के किनारे नन्हा नन्हा नाग नाचा।",
+"बड़ा बम बोले, बम भोले बम।"
+];
+
+// -------------------------
+// Logic
+// -------------------------
+let currentIndex = 0;
+let currentList = [];
+
+function updateList() {
+    const lang = document.getElementById("langSelect").value;
+    const type = document.getElementById("typeSelect").value;
+
+    if (lang === "english" && type === "riddle") currentList = englishRiddles;
+    if (lang === "english" && type === "twister") currentList = englishTwisters;
+    if (lang === "hindi" && type === "riddle") currentList = hindiRiddles;
+    if (lang === "hindi" && type === "twister") currentList = hindiTwisters;
+
+    currentIndex = 0;
+    display();
+}
+
+function display() {
+    document.getElementById("answer").innerText = ""; // hide previous answer
+
+    let item = currentList[currentIndex];
+
+    if (typeof item === "string") {
+        document.getElementById("output").innerText = item;
+    } else {
+        document.getElementById("output").innerText = item.q;
+    }
+}
+
+function nextItem() {
+    currentIndex = (currentIndex + 1) % currentList.length;
+    display();
+}
+
+function previousItem() {
+    currentIndex = (currentIndex - 1 + currentList.length) % currentList.length;
+    display();
+}
+
+function showAnswer() {
+    let item = currentList[currentIndex];
+    if (typeof item !== "string") {
+        document.getElementById("answer").innerText = item.a;
+    } else {
+        document.getElementById("answer").innerText = "No answer (Tongue Twister)";
+    }
+}
+
+// Load first question on page start
+updateList();
+
+</script>
+
+</body>
+</html>
